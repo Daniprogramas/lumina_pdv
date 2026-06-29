@@ -125,9 +125,9 @@ LOGIN_REDIRECT_URL = '/menu/'
 LOGOUT_REDIRECT_URL = '/login/'  
 
 # Modelo customizado de utilizador
-##AUTH_USER_MODEL = 'usuarios.Usuario'
+AUTH_USER_MODEL = 'usuarios.Usuario'
 
 # Backend obrigatório para autenticar o modelo customizado Corretamente
-#AUTHENTICATION_BACKENDS = [
-#    'django.contrib.auth.backends.ModelBackend',
-#]
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
