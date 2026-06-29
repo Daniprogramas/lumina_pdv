@@ -24,6 +24,8 @@ DEBUG = True
 
 # AJUSTADO: Liberado para aceitar o link que o Railway vai gerar
 ALLOWED_HOSTS = ['*']
+# Logo abaixo de ALLOWED_HOSTS = ['*'], adicione isto:
+CSRF_TRUSTED_ORIGINS = ['https://luminapdv-production.up.railway.app']
 
 
 # Application definition
