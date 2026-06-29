@@ -72,14 +72,13 @@ WSGI_APPLICATION = 'lumina.wsgi.application'
 
 
 # Database
-# Configurado para o MySQL do Windows via WSL (Sem Senha)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'lumina_pdv',          # Mude para o nome EXATO do seu banco de dados se não for este
+        'NAME': 'railway',
         'USER': 'root',
-        'PASSWORD': '',                # Senha vazia conforme seu ambiente
-        'HOST': '127.0.0.1',           # IP mágico para o WSL conversar com o Windows
+        'PASSWORD': 'ZiYKVaRfaMtqeJOLicsZpSDrGjCJAuGs',
+        'HOST': 'mysql.railway.internal',
         'PORT': '3306',
     }
 }
