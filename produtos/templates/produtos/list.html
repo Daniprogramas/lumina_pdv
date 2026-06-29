@@ -1,0 +1,33 @@
+{% extends "produtos/base_produtos.html" %}
+
+{% block content %}
+<h2 class="mb-4">Lista de Produtos e Serviços</h2>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Categoria</th>
+            <th>Preço</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for produto in produtos %}
+        <tr>
+            <td>{{ produto.nome }}</td>
+            <td>{{ produto.categoria }}</td>
+            <td>R$ {{ produto.preco }}</td>
+            <td>
+                <a href="{% url 'detalhe_produto' produto.id %}" 
+                   class="btn btn-info btn-sm" aria-label="Ver detalhes">Detalhes</a>
+                <a href="{% url 'editar_produto' produto.id %}" 
+                   class="btn btn-primary btn-sm" aria-label="Editar produto">Editar</a>
+                <a href="{% url 'excluir_produto' produto.id %}" 
+                   class="btn btn-danger btn-sm" aria-label="Excluir produto">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

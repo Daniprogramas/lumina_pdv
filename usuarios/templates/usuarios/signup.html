@@ -1,0 +1,20 @@
+{% extends "usuarios/base_usuarios.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow p-4">
+            <h2 class="mb-3 text-center">Cadastrar Usuário</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_access_code" class="form-label">Código de Acesso</label>
+                    <input type="text" name="access_code" class="form-control" id="id_access_code" required>
+                </div>
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success w-100">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "vendas/base_vendas.html" %}
+
+{% block content %}
+<h2>Detalhe da Venda #{{ venda.id }}</h2>
+
+<p><strong>Operador:</strong> {{ venda.operador.username }}</p>
+<p><strong>Data:</strong> {{ venda.data_venda }}</p>
+<p><strong>Forma de Pagamento:</strong> {{ venda.forma_pagamento }}</p>
+<p><strong>Troco:</strong> R$ {{ venda.troco }}</p>
+<p><strong>Valor Total:</strong> R$ {{ venda.valor_total }}</p>
+
+<h3>Itens da Venda</h3>
+<ul>
+    {% for item in itens %}
+        <li>{{ item.quantidade }}x {{ item.produto.nome }} - R$ {{ item.subtotal }}</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'lista_vendas' %}">Voltar para Lista de Vendas</a>
+{% endblock %}

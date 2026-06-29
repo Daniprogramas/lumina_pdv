@@ -1,0 +1,177 @@
+{% extends "usuarios/base_usuarios.html" %}
+
+{% block title %}Menu PDV - Lumina{% endblock %}
+
+{% block content %}
+<style>
+    .painel-container {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+    .card-modulo {
+        background-color: var(--cor-fundo-box, #ffffff);
+        border: 2px solid var(--cor-borda, #e0e0e0);
+        border-radius: 12px;
+        transition: all 0.2s ease-in-out;
+        text-decoration: none;
+        color: var(--cor-texto, #333333);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+    .card-modulo:hover {
+        transform: translateY(-4px);
+        border-color: var(--cor-primaria, #0d6efd);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        color: var(--cor-primaria, #0d6efd);
+    }
+    body.alto-contraste .card-modulo:hover {
+        border-color: var(--cor-texto);
+        box-shadow: none;
+    }
+    .badge-perfil {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+        border-radius: 30px;
+        font-weight: 700;
+    }
+    .status-caixa {
+        font-size: 1.1rem;
+        font-weight: 800;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="container mt-4 painel-container">
+    
+    <div class="d-flex flex-wrap justify-content-between align-items-center p-3 mb-4 rounded-3 border bg-light shadow-sm" style="background-color: var(--cor-fundo-box) !important; border-color: var(--cor-borda) !important;">
+        <div>
+            <h2 class="mb-1 fw-bold text-primary"><i class="bi bi-pc-display-horizontal me-2"></i>Lumina PDV</h2>
+            <p class="mb-0 text-muted">Operador atual: <strong>{{ request.user.username }}</strong></p>
+        </div>
+        <div class="text-end mt-2 mt-sm-0">
+            {% if request.user.is_staff or request.user.username == 'supervisor1' %}
+                <span class="badge bg-danger badge-perfil text-white mb-2 d-inline-block"><i class="bi bi-shield-lock-fill me-1"></i> PAINEL GESTOR</span>
+            {% else %}
+                <span class="badge bg-success badge-perfil text-white mb-2 d-inline-block"><i class="bi bi-person-workspace me-1"></i> OPERADOR</span>
+            {% endif %}
+            <div class="status-caixa text-success"><i class="bi bi-circle-fill me-1" style="font-size: 0.8rem;"></i> CAIXA ABERTO</div>
+        </div>
+    </div>
+
+    {% if messages %}
+      <div class="row mb-3">
+        <div class="col-12">
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show fw-bold" role="alert" style="border: 2px solid currentColor;">
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if request.user.is_staff or request.user.username == 'supervisor1' %}
+        <h4 class="mb-3 fw-bold text-danger"><i class="bi bi-sliders me-2"></i>Controle de Gestão & Finanças</h4>
+        
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="p-3 border rounded-3 text-white bg-success shadow-sm">
+                    <small class="text-uppercase fw-bold opacity-75">Faturamento Total</small>
+                    <h3 class="fw-bold mb-0">R$ 0,00</h3>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 border rounded-3 text-white bg-primary shadow-sm">
+                    <small class="text-uppercase fw-bold opacity-75">Balanço de Caixa</small>
+                    <h3 class="fw-bold mb-0">R$ 0,00</h3>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 border rounded-3 text-white bg-warning shadow-sm">
+                    <small class="text-uppercase fw-bold opacity-75">Alertas do Estoque</small>
+                    <h3 class="fw-bold mb-0">Sem Alertas</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-5">
+            <div class="col-6 col-md-3">
+                <a href="#" class="card card-modulo p-4 text-center">
+                    <i class="bi bi-cash-coin display-5 mb-3 text-success"></i>
+                    <h5 class="fw-bold mb-0">Fluxo de Caixa</h5>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="#" class="card card-modulo p-4 text-center">
+                    <i class="bi bi-graph-up-arrow display-5 mb-3 text-primary"></i>
+                    <h5 class="fw-bold mb-0">Relatórios Financeiros</h5>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="#" class="card card-modulo p-4 text-center">
+                    <i class="bi bi-box-seam-fill display-5 mb-3 text-warning"></i>
+                    <h5 class="fw-bold mb-0">Controle de Estoque</h5>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="{% url 'cadastro' %}" class="card card-modulo p-4 text-center">
+                    <i class="bi bi-person-plus-fill display-5 mb-3 text-info"></i>
+                    <h5 class="fw-bold mb-0">Cadastrar Operador</h5>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="#" class="card card-modulo p-4 text-center">
+                    <i class="bi bi-people-fill display-5 mb-3 text-secondary"></i>
+                    <h5 class="fw-bold mb-0">Gerenciar Usuários</h5>
+                </a>
+            </div>
+        </div>
+        <hr class="mb-4">
+    {% endif %}
+
+
+    <h4 class="mb-3 fw-bold text-success"><i class="bi bi-cart-fill me-2"></i>Operações do Operador</h4>
+    <div class="row g-3 mb-4">
+        
+        <div class="col-6 col-md-4">
+            <a href="{% url 'nova_venda' %}" class="card card-modulo p-4 text-center border-success border-2">
+                <i class="bi bi-cart-plus-fill display-4 mb-2 text-success"></i>
+                <h5 class="fw-bold mb-1">Registrar Venda</h5>
+                <small class="text-muted d-none d-md-block">Abertura de cupom fiscal / PDV</small>
+            </a>
+        </div>
+
+        <div class="col-6 col-md-4">
+            <a href="#" class="card card-modulo p-4 text-center">
+                <i class="bi bi-calculator display-4 mb-2 text-dark"></i>
+                <h5 class="fw-bold mb-1">Abrir / Fechar Caixa</h5>
+                <small class="text-muted d-none d-md-block">Controle diário de turno</small>
+            </a>
+        </div>
+
+        <div class="col-6 col-md-4">
+            <a href="{% url 'lista_produtos' %}" class="card card-modulo p-4 text-center">
+                <i class="bi bi-tags-fill display-4 mb-2 text-primary"></i>
+                <h5 class="fw-bold mb-1">Manter Produtos</h5>
+                <small class="text-muted d-none d-md-block">Cadastrar, editar e excluir itens</small>
+            </a>
+        </div>
+
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger px-5 py-2 fw-bold border-2">
+                <i class="bi bi-box-arrow-left me-2"></i>ENCERRAR SESSÃO (LOGOUT)
+            </a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

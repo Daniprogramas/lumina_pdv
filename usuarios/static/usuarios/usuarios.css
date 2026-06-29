@@ -1,0 +1,24 @@
+/* usuario.css atualizado para respeitar o Tema Dinâmico do Lumina PDV */
+
+body {
+  /* Ele agora puxa a cor da variável em vez de uma cor fixa */
+  background-color: var(--cor-fundo-body);
+  color: var(--cor-texto);
+}
+
+.card {
+  background-color: var(--cor-fundo-box);
+  border: 2px solid var(--cor-borda);
+}
+
+.btn-custom {
+  background-color: var(--cor-primaria);
+  color: var(--cor-fundo-box);
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+label {
+  font-weight: 800;
+  color: var(--cor-texto);
+}

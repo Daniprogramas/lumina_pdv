@@ -1,0 +1,16 @@
+{% extends "usuarios/base_usuarios.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="card shadow p-4">
+            <h2 class="mb-3 text-center">Alterar Senha</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary w-100">Salvar nova senha</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

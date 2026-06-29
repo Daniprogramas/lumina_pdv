@@ -1,0 +1,91 @@
+{% extends "usuarios/base_usuarios.html" %}
+
+{% block title %}Cadastro de Operador - Lumina{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12 mb-4">
+            <h2 class="fw-bold text-primary"><i class="bi bi-person-plus-fill me-2"></i>CADASTRO DE OPERADOR</h2>
+            <p class="text-muted">Insira as informações básicas para registrar um novo operador no sistema.</p>
+        </div>
+    </div>
+
+    {% if messages %}
+    <div class="row justify-content-center mb-3">
+        <div class="col-md-9">
+            {% for message in messages %}
+            <div class="alert alert-danger alert-dismissible fade show fw-bold text-uppercase" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-9">
+            <div class="p-4 border rounded-3 bg-white shadow-sm border-2" style="background-color: var(--cor-fundo-box) !important; border-color: var(--cor-borda) !important;">
+                <h4 class="fw-bold mb-4 text-dark"><i class="bi bi-pencil-square me-2"></i>DADOS DO OPERADOR</h4>
+                
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <input type="hidden" name="perfil" value="Operador">
+                    <input type="hidden" name="ativo" value="True">
+
+                    <div class="mb-3">
+                        <label for="id_nome_completo" class="form-label fw-bold fs-5">NOME COMPLETO</label>
+                        <input type="text" class="form-control form-control-lg border-2 {% if form.nome_completo.errors %}is-invalid{% endif %}" id="id_nome_completo" name="nome_completo" placeholder="INSIRA O NOME COMPLETO" value="{{ form.nome_completo.value|default:'' }}" required>
+                        {% if form.nome_completo.errors %}
+                            <div class="invalid-feedback fw-bold">{{ form.nome_completo.errors|striptags }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="id_username" class="form-label fw-bold fs-5">USUÁRIO DE ACESSO (LOGIN)</label>
+                            <input type="text" class="form-control form-control-lg border-2 {% if form.username.errors %}is-invalid{% endif %}" id="id_username" name="username" placeholder="EX: ASSIS.JF" value="{{ form.username.value|default:'' }}" required>
+                            {% if form.username.errors %}
+                                <div class="invalid-feedback fw-bold">{{ form.username.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="id_password1" class="form-label fw-bold fs-5">SENHA</label>
+                            <input type="password" class="form-control form-control-lg border-2 {% if form.password1.errors %}is-invalid{% endif %}" id="id_password1" name="password1" placeholder="******" required>
+                            {% if form.password1.errors %}
+                                <div class="invalid-feedback fw-bold">{{ form.password1.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="id_password2" class="form-label fw-bold fs-5">CONFIRMAR SENHA</label>
+                            <input type="password" class="form-control form-control-lg border-2 {% if form.password2.errors %}is-invalid{% endif %}" id="id_password2" name="password2" placeholder="******" required>
+                            {% if form.password2.errors %}
+                                <div class="invalid-feedback fw-bold">{{ form.password2.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="id_foto_operador" class="form-label fw-bold fs-5">FOTO DO OPERADOR <span class="text-muted fw-normal fs-6">(OPCIONAL)</span></label>
+                        <input type="file" class="form-control form-control-lg border-2 {% if form.foto_operador.errors %}is-invalid{% endif %}" id="id_foto_operador" name="foto_operador" accept="image/*">
+                        <div class="form-text">Formatos aceitos: JPG, PNG. Tamanho máximo recomendado: 2MB.</div>
+                        {% if form.foto_operador.errors %}
+                            <div class="invalid-feedback fw-bold">{{ form.foto_operador.errors|striptags }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex gap-3 mt-4">
+                        <button type="submit" class="btn btn-dark btn-lg flex-grow-1 fw-bold border-2 py-3">SALVAR CADASTRO</button>
+                        <button type="reset" class="btn btn-outline-secondary btn-lg fw-bold border-2 px-4 py-3">LIMPAR</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

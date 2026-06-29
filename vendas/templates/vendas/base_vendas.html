@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Lumina PDV - Vendas{% endblock %}</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        /* =========================================
+           VARIÁVEIS DE TEMA E SINALIZADORES (PADRÃO MENU)
+           ========================================= */
+        :root {
+            --font-principal: 'Inter', sans-serif;
+            --tamanho-base: 18px;
+            
+            /* TEMA CLARO */
+            --cor-fundo-body: #f4f6f9;
+            --cor-fundo-box: #ffffff;
+            --cor-texto: #1a1a1a;
+            --cor-borda: #dee2e6;
+            --cor-primaria: #0d6efd;
+            --cor-nav-texto: #333333;
+            --foco-teclado: #0d6efd;
+        }
+
+        body.modo-dark {
+            --cor-fundo-body: #0f172a;
+            --cor-fundo-box: #1e293b;
+            --cor-texto: #f8fafc;
+            --cor-borda: #334155;
+            --cor-primaria: #3b82f6;
+            --cor-nav-texto: #f8fafc;
+            --foco-teclado: #3b82f6;
+        }
+
+        body.alto-contraste {
+            --cor-fundo-body: #000000;
+            --cor-fundo-box: #000000;
+            --cor-texto: #ffff00;
+            --cor-borda: #ffff00;
+            --cor-primaria: #ffff00;
+            --cor-nav-texto: #ffff00;
+            --foco-teclado: #ffffff;
+        }
+
+        /* =========================================
+           ESTILIZAÇÃO GLOBAL
+           ========================================= */
+        body {
+            font-family: var(--font-principal);
+            font-size: var(--tamanho-base);
+            background-color: var(--cor-fundo-body);
+            color: var(--cor-texto);
+            transition: background-color 0.2s, color 0.2s;
+            padding-bottom: 60px;
+        }
+
+        /* NAVEGAÇÃO POR TECLADO EXTREMA */
+        body.guia-teclado *:focus {
+            outline: 4px solid var(--foco-teclado) !important;
+            outline-offset: 4px !important;
+            background-color: rgba(13, 110, 253, 0.15) !important;
+        }
+        body.alto-contraste.guia-teclado *:focus {
+            outline: 5px solid #ffffff !important;
+            background-color: #000000 !important;
+            color: #ffff00 !important;
+        }
+
+        /* BARRA DE ACESSIBILIDADE FIXA NO TOPO (ÚNICA) */
+        .a11y-bar {
+            background-color: var(--cor-fundo-box);
+            border-bottom: 2px solid var(--cor-borda);
+            padding: 8px 15px;
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .a11y-btn {
+            background: transparent;
+            border: 2px solid var(--cor-texto);
+            color: var(--cor-texto);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .a11y-btn:hover, .a11y-btn.ativo {
+            background-color: var(--cor-texto);
+            color: var(--cor-fundo-box);
+        }
+
+        /* CAIXA DO LEITOR DE TELA SIMULADO */
+        #leitor-tela-feedback {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: #1e293b;
+            color: #f8fafc;
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: 2px solid #3b82f6;
+            font-weight: bold;
+            z-index: 9999;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        body.alto-contraste #leitor-tela-feedback {
+            background-color: #000000;
+            color: #ffff00;
+            border-color: #ffff00;
+        }
+
+        /* NAVBAR DE VENDAS REESTILIZADA */
+        .navbar-pdv {
+            background-color: var(--cor-fundo-box);
+            border-bottom: 2px solid var(--cor-borda);
+            padding: 15px 0;
+        }
+        .navbar-pdv .navbar-brand {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--cor-nav-texto) !important;
+        }
+        .navbar-nav .nav-link {
+            font-weight: 600;
+            color: var(--cor-nav-texto) !important;
+            margin: 0 5px;
+            padding: 8px 16px;
+            border: 2px solid transparent;
+            border-radius: 8px;
+        }
+        .navbar-nav .nav-link:hover {
+            border-color: var(--cor-texto);
+        }
+        
+        /* CONTAINER CENTRAL IGUAL AO DO MENU */
+        .container-main {
+            margin-top: 25px;
+            background-color: var(--cor-fundo-box);
+            padding: 40px;
+            border-radius: 12px;
+            border: 2px solid var(--cor-borda);
+        }
+        
+        /* CORREÇÃO DO MODO ESCURO PARA FORMULÁRIOS E TABELAS DO BOOTSTRAP */
+        body.modo-dark .table, 
+        body.modo-dark .form-control, 
+        body.modo-dark .form-select {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+            border-color: #334155 !important;
+        }
+
+        /* Aplica as variáveis internas e garante as letras claras nas células */
+        body.modo-dark .table,
+        body.modo-dark .table th,
+        body.modo-dark .table td {
+            --bs-table-bg: #1e293b !important;
+            --bs-table-striped-bg: #2d3748 !important;
+            --bs-table-color: #f8fafc !important;
+            --bs-table-border-color: #334155 !important;
+            color: #f8fafc !important;
+        }
+        
+        /* Correção para o Alto Contraste nas Tabelas (Letras Amarelas) */
+        body.alto-contraste .table,
+        body.alto-contraste .table th,
+        body.alto-contraste .table td {
+            --bs-table-bg: #000000 !important;
+            --bs-table-striped-bg: #000000 !important;
+            --bs-table-color: #ffff00 !important;
+            --bs-table-border-color: #ffff00 !important;
+            color: #ffff00 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="a11y-bar">
+        <button class="a11y-btn" id="btn-dark"><i class="bi bi-moon-fill"></i> MODO DARK</button>
+        <button class="a11y-btn" id="btn-contraste"><i class="bi bi-circle-half"></i> ALTO CONTRASTE</button>
+        <button class="a11y-btn" id="btn-aumentar">A+</button>
+        <button class="a11y-btn" id="btn-diminuir">A-</button>
+        <button class="a11y-btn" id="btn-teclado"><i class="bi bi-keyboard"></i> GUIA DE TECLADO: OFF</button>
+        <button class="a11y-btn" id="btn-leitor"><i class="bi bi-volume-up-fill"></i> LEITOR DE TELA: OFF</button>
+    </div>
+
+    <div id="leitor-tela-feedback"><i class="bi bi-megaphone-fill me-2"></i> <span id="leitor-texto"></span></div>
+
+    <nav class="navbar navbar-expand-lg navbar-pdv mb-4">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="{% url 'menu' %}">
+                <i class="bi bi-box-seam-fill me-2"></i>LUMINA PDV
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link px-3" href="{% url 'lista_vendas' %}">Lista de Vendas</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="{% url 'nova_venda' %}">Nova Venda</a></li>
+                    <li class="nav-item"><a class="nav-link text-danger border-danger px-3" href="{% url 'menu' %}">Voltar ao Menu</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container container-main">
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if 'success' in message.tags %}alert-success{% else %}alert-danger{% endif %} alert-dismissible fade show fw-bold mb-4 border border-2 d-flex align-items-center" 
+                     role="alert" 
+                     style="background-color: var(--cor-fundo-box);">
+                    
+                    <i class="bi {% if 'success' in message.tags %}bi-check-circle-fill{% else %}bi-trash-fill{% endif %} me-2 fs-4"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (localStorage.getItem("tema") === "dark") document.body.classList.add("modo-dark");
+            if (localStorage.getItem("contraste") === "ativo") document.body.classList.add("alto-contraste");
+            if (localStorage.getItem("guiaTeclado") === "on") {
+                document.body.classList.add("guia-teclado");
+                document.getElementById("btn-teclado").innerHTML = '<i class="bi bi-keyboard-fill"></i> GUIA DE TECLADO: ON';
+                document.getElementById("btn-teclado").classList.add("ativo");
+            }
+            if (localStorage.getItem("leitorTela") === "on") {
+                document.getElementById("btn-leitor").innerHTML = '<i class="bi bi-volume-up-fill"></i> LEITOR DE TELA: ON';
+                document.getElementById("btn-leitor").classList.add("ativo");
+            }
+            
+            let tamanhoSalvo = localStorage.getItem("tamanhoFonte") || 18;
+            document.documentElement.style.setProperty('--tamanho-base', tamanhoSalvo + 'px');
+
+            // MODO DARK
+            document.getElementById("btn-dark").addEventListener("click", () => {
+                document.body.classList.toggle("modo-dark");
+                document.body.classList.remove("alto-contraste"); 
+                localStorage.setItem("tema", document.body.classList.contains("modo-dark") ? "dark" : "claro");
+                localStorage.removeItem("contraste");
+            });
+
+            // ALTO CONTRASTE
+            document.getElementById("btn-contraste").addEventListener("click", () => {
+                document.body.classList.toggle("alto-contraste");
+                document.body.classList.remove("modo-dark");
+                localStorage.setItem("contraste", document.body.classList.contains("alto-contraste") ? "ativo" : "inativo");
+                localStorage.removeItem("tema");
+            });
+
+            // FONTES A+ / A-
+            document.getElementById("btn-aumentar").addEventListener("click", () => {
+                let atual = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--tamanho-base'));
+                if (atual < 28) { document.documentElement.style.setProperty('--tamanho-base', (atual + 2) + 'px'); localStorage.setItem("tamanhoFonte", atual + 2); }
+            });
+            document.getElementById("btn-diminuir").addEventListener("click", () => {
+                let atual = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--tamanho-base'));
+                if (atual > 14) { document.documentElement.style.setProperty('--tamanho-base', (atual - 2) + 'px'); localStorage.setItem("tamanhoFonte", atual - 2); }
+            });
+
+            // GUIA DE TECLADO
+            document.getElementById("btn-teclado").addEventListener("click", function() {
+                document.body.classList.toggle("guia-teclado");
+                const ativo = document.body.classList.contains("guia-teclado");
+                this.innerHTML = ativo ? '<i class="bi bi-keyboard-fill"></i> GUIA DE TECLADO: ON' : '<i class="bi bi-keyboard"></i> GUIA DE TECLADO: OFF';
+                this.classList.toggle("ativo", ativo);
+                localStorage.setItem("guiaTeclado", ativo ? "on" : "off");
+                falarNoLeitor(ativo ? "Modo guia de teclado ativado." : "Modo guia de teclado desativado.");
+            });
+
+            // LEITOR DE TELA
+            document.getElementById("btn-leitor").addEventListener("click", function() {
+                const ativo = this.classList.toggle("ativo");
+                this.innerHTML = ativo ? '<i class="bi bi-volume-up-fill"></i> LEITOR DE TELA: ON' : '<i class="bi bi-volume-up-fill"></i> LEITOR DE TELA: OFF';
+                localStorage.setItem("leitorTela", ativo ? "on" : "off");
+                falarNoLeitor(ativo ? "Leitor de tela ativado." : "Leitor de tela desativado.");
+            });
+
+            function falarNoLeitor(texto) {
+                if (localStorage.getItem("leitorTela") !== "on") return;
+                const caixaFeedback = document.getElementById("leitor-tela-feedback");
+                const textoFeedback = document.getElementById("leitor-texto");
+                textoFeedback.innerText = texto;
+                caixaFeedback.style.display = "block";
+
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(texto);
+                utterance.lang = "pt-BR";
+                window.speechSynthesis.speak(utterance);
+            }
+
+            document.addEventListener("focusin", (e) => {
+                let textoParaLer = e.target.innerText || e.target.placeholder || e.target.ariaLabel || e.target.value;
+                if(textoParaLer) falarNoLeitor("Selecionado: " + textoParaLer);
+            });
+            document.addEventListener("mouseover", (e) => {
+                if (e.target.tagName === "BUTTON" || e.target.tagName === "A" || e.target.tagName === "INPUT" || e.target.tagName === "LABEL") {
+                    let textoParaLer = e.target.innerText || e.target.placeholder || e.target.value;
+                    if(textoParaLer) falarNoLeitor(textoParaLer);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
